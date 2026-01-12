@@ -1,0 +1,23 @@
+# --- Java Specific ---
+*.class
+*.jar
+*.war
+*.ear
+
+# Build folders
+target/
+bin/
+build/
+
+# --- macOS Specific ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- VS Code Specific ---
+.vscode/
+*.code-workspace
+
+# --- Package Managers ---
+.gradle/
+.mvn/
