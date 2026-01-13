@@ -63,45 +63,52 @@ public class RobotPuzzle extends Application {
     
 
     private StackPane createDropSlot() {
-        StackPane slot = new StackPane();
-        slot.setPrefSize(120, 40);
-        slot.setStyle("-fx-border-color: black; -fx-background-color: #f0f0f0;");
+    StackPane slot = new StackPane();
+    slot.setPrefSize(120, 40);
+    slot.setStyle("-fx-border-color: black; -fx-background-color: #f0f0f0;");
 
-        // Allow drop
-        slot.setOnDragDropped(e -> {
-        Dragboard db = e.getDragboard();
+    // 1. Allow drag to enter the slot
+        slot.setOnDragOver(event -> {
+        if (event.getGestureSource() != slot && event.getDragboard().hasString()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+        });
+
+        // 2. Handle drop
+        slot.setOnDragDropped(event -> {
+        Dragboard db = event.getDragboard();
         boolean success = false;
 
         if (db.hasString()) {
-        String data = db.getString();
-        String[] parts = data.split(",");
+            String data = db.getString();   // Example: "Cleaning,cleaning.png"
+            System.out.println("Dropped: " + data); // Debug line
 
-        // We only care about the image now
-        String imageFile = parts[1];
+            String[] parts = data.split(",");
+            String imageFile = parts[1];
 
-        Image image = new Image(
-            getClass().getResourceAsStream("/images/robots/" + imageFile)
-        );
+            Image image = new Image(
+                getClass().getResourceAsStream("/images/robots/" + imageFile)
+            );
 
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(40);
-        imageView.setFitHeight(40);
-        imageView.setPreserveRatio(true);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(60);
+            imageView.setFitHeight(60);
+            imageView.setPreserveRatio(true);
 
-        slot.getChildren().clear();
-        slot.getChildren().add(imageView);
+            slot.getChildren().clear();
+            slot.getChildren().add(imageView);
 
-        success = true;
+            success = true;
         }
 
-        e.setDropCompleted(success);
-        e.consume();
-        });
-
-
+        event.setDropCompleted(success);
+        event.consume();
+         });
 
         return slot;
-    }
+        }
+
 
     private HBox createRobotPool() {
         HBox box = new HBox(15);
@@ -146,12 +153,12 @@ private VBox createStudentView(String name, String imageFile) {
     );
 
     ImageView imageView = new ImageView(image);
-    imageView.setFitWidth(60);
-    imageView.setFitHeight(60);
+    imageView.setFitWidth(80);
+    imageView.setFitHeight(80);
     imageView.setPreserveRatio(true);
 
     // Make it circular
-    Circle clip = new Circle(30, 30, 30);
+    Circle clip = new Circle(40, 40, 40);
     imageView.setClip(clip);
 
     Label nameLabel = new Label(name);
@@ -184,14 +191,14 @@ private VBox createStudentView(String name, String imageFile) {
 
     // Drag logic
     box.setOnDragDetected(e -> {
-        Dragboard db = box.startDragAndDrop(TransferMode.MOVE);
-        ClipboardContent content = new ClipboardContent();
+    Dragboard db = box.startDragAndDrop(TransferMode.MOVE);
+    ClipboardContent content = new ClipboardContent();
 
-        // Send both name and image path
-        content.putString(name + "," + imageFile);
+    // name,image
+    content.putString(name + "," + imageFile);
 
-        db.setContent(content);
-        e.consume();
+    db.setContent(content);
+    e.consume();
     });
 
     return box;
