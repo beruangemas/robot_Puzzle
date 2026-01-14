@@ -27,9 +27,10 @@ public class RobotPuzzle extends Application {
         HBox robotPool = createRobotPool();
         root.setBottom(robotPool);
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root);
         stage.setTitle("Robot Puzzle Game");
         stage.setScene(scene);
+        stage.sizeToScene();
         stage.show();
     }
 
@@ -64,7 +65,7 @@ public class RobotPuzzle extends Application {
 
     private StackPane createDropSlot() {
     StackPane slot = new StackPane();
-    slot.setPrefSize(120, 40);
+    slot.setPrefSize(120, 120);
     slot.setStyle("-fx-border-color: black; -fx-background-color: #f0f0f0;");
 
     // 1. Allow drag to enter the slot
@@ -92,8 +93,8 @@ public class RobotPuzzle extends Application {
             );
 
             ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(60);
-            imageView.setFitHeight(60);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
             imageView.setPreserveRatio(true);
 
             slot.getChildren().clear();
@@ -132,7 +133,7 @@ public class RobotPuzzle extends Application {
         "-fx-padding: 8;" +
         "-fx-background-color: #d0eaff;"
     );
-    label.setMinSize(80, 30);
+    label.setMinSize(80, 80);
     label.setAlignment(Pos.CENTER);
 
     label.setOnDragDetected(e -> {
@@ -178,8 +179,8 @@ private VBox createStudentView(String name, String imageFile) {
     );
 
     ImageView imageView = new ImageView(image);
-    imageView.setFitWidth(50);
-    imageView.setFitHeight(50);
+    imageView.setFitWidth(80);
+    imageView.setFitHeight(80);
     imageView.setPreserveRatio(true);
 
     Label label = new Label(name);
